@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Discounted Products</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Discounted sale</th>
+      <th>Product</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @discounted_products.each do |discounted_product| %>
+      <tr>
+        <td><%= discounted_product.discounted_sale_id %></td>
+        <td><%= discounted_product.product_id %></td>
+        <td><%= link_to 'Show', discounted_product %></td>
+        <td><%= link_to 'Edit', edit_discounted_product_path(discounted_product) %></td>
+        <td><%= link_to 'Destroy', discounted_product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Discounted product', new_discounted_product_path %>

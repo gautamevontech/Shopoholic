@@ -1,0 +1,76 @@
+<h1>Listing Addresses</h1>
+<div style="width: 60%;margin: auto;">
+  <%= form_tag add_delivery_address_path do %>
+    <table>
+      <tbody>
+        <div class="panel panel-info" style="padding-bottom: 20px;">
+          <div class="panel-heading">
+            <h2 class="panel-title" style="font-size: 25px;">Choose your address for delivery</h2>
+          </div>
+          <% if @order_address.present?%>
+            <% @order_address.each do |address| %>
+              <div class="panel-body" style="font-size: 20px;">
+                <p><%= radio_button_tag 'delivery_address', address.id, checked:"true"%>  <%= address.address %></p>
+              </div>
+            <% end %>
+          <% end %>
+          <div style="text-align: left; margin-left: 15px; margin-top: 10px;">
+            <a href="<%= %>" class="btn btn-info", data-toggle="modal" , data-target="#myModal">Add a new address
+            <i class="fa fa-angle-center"></a>
+          </div>
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                <% if user_signed_in? %>
+                  <%= form_tag add_delivery_address_path do %>
+                    <div class="">
+                      <label style="font-size: 20px;">Address Line*</label><br>
+                      <textarea rows="4" name="new_delivery_address" class="form-control"></textarea>
+                    </div>
+                    <div class="">
+                      <label style="font-size: 20px;">City*</label><br>
+                      <input type="text" name="city" class="form-control">
+                      </input>
+                    </div>
+                    <div class="">
+                      <label style="font-size: 20px;">State*</label><br>
+                      <input type="text" name="state" class="form-control">
+                      </input>
+                    </div>
+                    <div class="">
+                      <label style="font-size: 20px;">Zip Code*</label><br>
+                      <input type="text" name="zip" class="form-control">
+                      </input>
+                    </div>
+                    <div class="">
+                      <label style="font-size: 20px;">Country*</label><br>
+                      <input type="text" name="country" class="form-control">
+                      </input>
+                    </div>
+                    <div class="">
+                      <%= hidden_field_tag :user_id, value: current_user.id, style:"display:none"  %>
+                    </div>
+                    <div class="actions">
+                      <input type="submit" value="Save" class="form-control btn btn-success" style="width: 20%; margin-top: 10px;"></input>
+                    </div>
+                  <% end %>
+                <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tbody>
+    </table>
+    <div style="text-align: center;">
+      <p><%= submit_tag "Proceed Checkout" ,class:"btn btn-success", style:"font-size:25px;" %></p>
+    </div>
+  <% end %>
+</div>

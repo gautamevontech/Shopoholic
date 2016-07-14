@@ -1,0 +1,63 @@
+<div class="container">
+  <style type="text/css">
+    th{
+      font-size: 25px;
+    }
+  </style>
+
+  <h1>Your Order Receipt</h1>
+  <div style="border:1px solid;padding: 20px 20px;margin-bottom: 20px;background-color: #EEF2F2">
+    <div style="float: left;">
+      <p style="font-size: 25px;"><b>Customer Name</b> : <%= @order.my_cart.user.first_name %> <%= @order.my_cart.user.last_name %> </p>
+      <p style="font-size: 25px;"><b>Transaction ID</b> : <%= @order.transaction_id %> </p>
+      <p style="font-size: 25px;"><b>Purchased at</b> : <%= @order.purchased_at %> </p>
+      <p style="font-size: 25px;"><b>Payment Status</b> : Paid </p>
+    </div>
+    <div style="float: right;">
+      <p style="font-size: 30px;text-align: right;"><b>Delivery Address</b></p><p style="font-size: 20px;text-align: right;"><%= @order.my_cart.address.address %>,</br> <%= @order.my_cart.address.city %>,</br> <%= @order.my_cart.address.state %>,</br> <%= @order.my_cart.address.country %>,</br> <%= @order.my_cart.address.zip %></p>
+    </div>
+    <table class="table" id="cart_table">
+      <thead class="thead-default">
+        <tr>
+          <th></th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cart.each do |cart| %>
+          <tr>
+            <td><%= image_tag(cart.product.image.url, size:'150x100') if cart.product.image? %></td>
+            <td><%= cart.product.name %></td>
+            <% if cart.product.discounted_price.present? %>
+              <td>
+                <input type="mumber" value="<%= cart.product_quantity%>" style="width: 45px; display: inline-block;" class="form-control" disabled>
+              </td>
+            <% else %>
+              <td>
+                <input type="mumber" value="<%= cart.product_quantity%>" style="width: 45px; display: inline-block;" class="form-control" disabled>
+              </td>
+            <% end %>
+            <% if cart.product.discounted_price.present? %>
+              <td id="item_price_<%= cart.product.id %>"><%=cart.product.discounted_price*cart.product_quantity %></td>
+            <% else %>
+              <td id="item_price_<%= cart.product.id %>"><%= cart.product.price*cart.product_quantity %></td>
+            <% end %>
+          </tr>
+        <% end %>
+        <tr>
+          <td colspan="2"></td>
+          <td style="text-align: right;" colspan="2">
+            <p style="font-size: 30px;"><b>Estimated Total</b></p>
+            <p style="font-size: 20px;">Rs - <%= @order.my_cart.cart_total %></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <a href="https://9c85dbb4.ngrok.io" class="btn btn-primary" value="" style="text-align: center;">
+    Continue Shopping
+  </a>
+</div>

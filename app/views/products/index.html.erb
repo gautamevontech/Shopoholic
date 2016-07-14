@@ -1,0 +1,90 @@
+
+
+<div class="container">
+
+  <div class="jumbotron" style="text-align: center;background-image: url(/assets/shopping.jpg); background-size: 2500px 1800px;">
+    <h1><span style="color: black">Welcome to Shopoholic!</span></h1>
+    <h1><span style="color: black">A Shop to Shop Everything</span></h1>
+    <% if !user_signed_in? %>
+      <a href="<%= new_user_registration_path %>" class="btn btn-primary" style="font-size: 22px;">Register</a>
+    <% end %>
+ </div>
+
+  <% if @discounted_sale.present? %>
+    <h3 style="text-align: center;"><b><%=@discounted_sale.name%> Sale. Flat <%= @discounted_sale.discount_percent %>% off!</b> <b>Ending on <%= @discounted_sale.end_date.to_date %></b></h3>
+  <% end %>
+  <% if @discounted_products.present? %>
+    <ul id="flexiselDemo3">
+      <% @discounted_products.each do |discounted_product| %>
+        <li>
+          <%= link_to image_tag(discounted_product.product.image.url, size: '300x300'), product_path(discounted_product.product.id) if discounted_product.product.image? %>
+          <h3><%= discounted_product.product.name %></h3>
+          <p style="text-align: center; font-size: 20px; margin-top: 20px;">Rs.<b><%= discounted_product.product.discounted_price %></b> <strike><b style="color: red;"><%= discounted_product.product.price%></b>
+          </strike></p>
+          <% if @cart.present? && @cart.cart_items.where(product_id:discounted_product.product.id).present?%>
+            <input type="button" class="btn btn-success" disabled value="Added to cart" style="margin-top: 15px;"></input>
+          <% else %>
+            <input type="button" class="btn btn-default add_product product_item_<%= discounted_product.product.id %>" style="margin-top:15px;" value="Add To Cart"
+            id="add_to_cart1_<%= discounted_product.product.id %>"></input>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <h1>All Products</h1>
+  <% @products.each do |product| %>
+    <div class="home_article_div">
+      <div class="home_image_div">
+        <%= link_to image_tag(product.image.url, size: '300x200'), product_path(product) if product.image?  %>
+      </div>
+      <div>
+        <h3><%= product.name %></h3>
+        <% if product.discounted_price.present? %>
+          <p style="text-align: center; font-size: 20px;">Rs.<b><%= product.discounted_price %></b> <strike><b style="color: red;"><%= product.price%></b>
+          </strike></p>
+        <% else %>
+          <p style="text-align: center; font-size: 20px;">Rs.<b><%= product.price%></b></p>
+        <% end %>
+      </div>
+      <div class="home_button_div">
+        <% if @cart.present? && @cart.cart_items.where(product_id:product.id).present?%>
+          <input type="button" id="added" class="btn btn-success" disabled value="Added to cart" ></input>
+        <% else %>
+          <input type="button" class="btn btn-default add_product product_item_<%= product.id %>" value="Add To Cart" id="add_to_cart_<%= product.id %>"></input>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     $("#flexiselDemo3").flexisel({
+        visibleItems: 3,
+        itemsToScroll: 1,
+        autoPlay: {
+            enable: true,
+            interval: 5000,
+            pauseOnHover: true
+        }
+    });
+
+    $(".add_product").click(function(){
+      var abc = this.id
+      var id = this.id.split('_');
+      $.ajax({
+        url: "<%= add_to_cart_path %>",
+        type: "GET",
+        data:{product_id: id[3]},
+        success: function(data) {
+          $('#badge').html(data.cart_count);
+          $('.product_item_'+id[3]).attr('value','Added To Cart')
+          $('.product_item_'+id[3]).addClass('btn btn-success')
+          $('.product_item_'+id[3]).prop("disabled",true)
+        }
+      });
+    });
+  });
+</script>

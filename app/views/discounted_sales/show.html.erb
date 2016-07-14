@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Discount percent:</strong>
+  <%= @discounted_sale.discount_percent %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @discounted_sale.start_date %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @discounted_sale.end_date %>
+</p>
+
+<%= link_to 'Edit', edit_discounted_sale_path(@discounted_sale) %> |
+<%= link_to 'Back', discounted_sales_path %>

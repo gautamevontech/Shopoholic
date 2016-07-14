@@ -1,0 +1,87 @@
+<nav class="navbar navbar-inverse" style="margin-top:-50px;">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <% if action_name == "order_receipt" %>
+        <span style="font-size: 2.5em;color: white;"><b>SHOPOHOLIC</b></span>
+      <% else %>
+        <a class="navbar-brand" href="<%=root_path%>" style="font-size: 2.5em;color: white;"><b>SHOPOHOLIC</b></a>
+      <% end %>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <% if action_name == "order_receipt" %>
+      <% else %>
+        <form class="navbar-form navbar-left" role="search" style="margin-left: 150px"
+          action="<%= products_path %>">
+          <div class="row">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <% ProductCategory.all.each do |category| %>
+                    <li><a href="<%=root_path(product_category_id: category.id)%> "><%=category.name%></a></li>
+                  <% end %>
+                </ul>
+              </div>
+              <input type="text" class="form-control" style="width: 550px;" placeholder="So, What are you planning to buy today?" name="search_key">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+          </div>
+        </form>
+      <% end %>
+      <% if action_name == "order_receipt" %>
+
+      <% else %>
+        <ul class="nav navbar-nav navbar-right">
+          <% if user_signed_in? %>
+            <li role="presentation">
+              <a href="<%= myCart_path %>">
+                <span class="glyphicon glyphicon-shopping-cart"></span>
+                   Cart
+                <span class="badge" id="badge">
+                  <% if session[:cart_id].blank? %>
+                     0
+                  <% else %>
+                    <%= MyCart.find(session[:cart_id].to_i).cart_items.count %>
+                  <% end %>
+                </span>
+              </a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%=current_user.first_name%> <%=current_user.last_name%> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="<%= purchased_orders_path%>">Purchased Orders</a></li>
+                <li><a href="<%= edit_user_registration_path%>">Edit Profile</a></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to " LogOut" ,  destroy_user_session_path,class:"glyphicon glyphicon-user" , method: :delete %></li>
+              </ul>
+            </li>
+        <% else %>
+          <li role="presentation">
+            <a href="<%= myCart_path %>">
+              <span class="glyphicon glyphicon-shopping-cart"></span>
+                 Cart
+              <span class="badge" id="badge">
+                <% if session[:cart_id].blank? %>
+                   0
+                <% else %>
+                  <%= MyCart.find(session[:cart_id].to_i).cart_items.count %>
+                <% end %>
+              </span>
+            </a>
+          </li>
+          <li><%= link_to(" Login", new_user_session_path, class:"glyphicon glyphicon-log-in") %></li>
+        <% end %>
+      <% end %>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

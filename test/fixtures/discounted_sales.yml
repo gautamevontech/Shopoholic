@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  discount_percent: 1
+  start_date: 2016-06-13 16:58:32
+  end_date: 2016-06-13 16:58:32
+
+two:
+  discount_percent: 1
+  start_date: 2016-06-13 16:58:32
+  end_date: 2016-06-13 16:58:32

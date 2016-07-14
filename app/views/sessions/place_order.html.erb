@@ -1,0 +1,59 @@
+<style type="text/css">
+  th{
+    font-size: 25px;
+  }
+</style>
+
+<div style="width: 60%;margin: auto;">
+  <h1>Your Order Summary</h1>
+  <table class="table" id="cart_table">
+    <% if session[:cart_id].blank? %>
+      <h3 style="text-align: center;">Sorry! You havent created any order yet!</h3>
+    <% else %>
+      <thead class="thead-default">
+        <tr>
+          <th></th>
+          <th>Item</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cart.cart_items.each do |cart|%>
+          <tr id="<%= cart.product.id %>">
+            <td><%= image_tag(cart.product.image.url, size: '150x100') if cart.product.image? %></td>
+            <td><%= cart.product.name %></td>
+            <% if cart.product.discounted_price.present? %>
+              <td>
+                <input type="mumber" value="<%= cart.product_quantity%>" style="width: 45px; display: inline-block;" class="form-control" disabled>
+              </td>
+            <% else %>
+              <td>
+                <input type="mumber" value="<%= cart.product_quantity%>" style="width: 45px; display: inline-block;" class="form-control" disabled>
+              </td>
+            <% end %>
+            <% if cart.product.discounted_price.present? %>
+              <td id="item_price_<%= cart.product.id %>"><%=cart.product.discounted_price*cart.product_quantity %></td>
+            <% else %>
+              <td id="item_price_<%= cart.product.id %>"><%=cart.product.price*cart.product_quantity %></td>
+            <% end %>
+          </tr>
+        <% end %>
+        <tr>
+          <td colspan="2"><p style="font-size: 30px;"><b>Delivery Address</b></p><p style="font-size: 20px;"><%= @delivery_address.address %>, <%= @delivery_address.city %>, <%= @delivery_address.state %>, <%= @delivery_address.country %>, <%= @delivery_address.zip %></p></td>
+          <td style="text-align: left;">
+            <p style="font-size: 30px;"><b>Estimated Total</b></p>
+            <p style="font-size: 20px;">Rs - <%= @cart.cart_total %></p>
+          </td>
+          <td style="font-size: 30px;">
+          <%= form_tag order_create_path, method:'get' do %>
+              <%= hidden_field_tag(:myCart_id, @cart.id) %>
+              <input type="submit" value="Pay Now" class="btn btn-primary"></input>
+          <% end %>
+          </td>
+        </tr>
+      </tbody>
+    <% end %>
+  </table>
+</div>

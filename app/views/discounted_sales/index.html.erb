@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Discounted Sales</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Discount percent</th>
+      <th>Start date</th>
+      <th>End date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @discounted_sales.each do |discounted_sale| %>
+      <tr>
+        <td><%= discounted_sale.discount_percent %></td>
+        <td><%= discounted_sale.start_date %></td>
+        <td><%= discounted_sale.end_date %></td>
+        <td><%= link_to 'Show', discounted_sale %></td>
+        <td><%= link_to 'Edit', edit_discounted_sale_path(discounted_sale) %></td>
+        <td><%= link_to 'Destroy', discounted_sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Discounted sale', new_discounted_sale_path %>
